@@ -1,11 +1,12 @@
 var regex = /.+\">(\d+)<\/span>.+/g;
 var test_if_attack = /\d+ vs .+/g;
-var surgeLevel = 1;
-
+if(localStorage.getItem("attackBotSurgeLevel")===null){
+	localStorage.setItem("attackBotSurgeLevel") = 1;
+}
 var buttonDiv = document.createElement('button');
 buttonDiv.id = "injectAttack";
-buttonDiv.innerHTML = "INJECT ATTACK";
-buttonDiv.style.width = "50%";
+buttonDiv.innerHTML = "Inject attack";
+buttonDiv.style.width = "100px";
 buttonDiv.style.height= "20px";
 buttonDiv.style.backgroundColor = "red";
 buttonDiv.style.position="fixed";
@@ -13,6 +14,17 @@ buttonDiv.style.top = "0";
 buttonDiv.style.left = "0";
 buttonDiv.style.zIndex = "999999";
 document.body.appendChild(buttonDiv);
+
+var inputDiv = document.createElement('input');
+inputDiv.id = "surgeLevel";
+inputDiv.value = parseInt(localStorage.getItem("attackBotSurgeLevel"));
+inputDiv.style.width = "100px";
+inputDiv.style.height = "20px";
+inputDiv.style.position="fixed";
+inputDiv.style.left = "200px";
+inputDiv.style.top = "0";
+inputDiv.style.zIndex = "999998";
+document.body.appendChild(inputDiv);
 
 document.getElementById("injectAttack").addEventListener("click", (event) => {
 	var textarea = $(document.getElementById("textchat")).children()[1].getElementsByClassName("you");
@@ -34,8 +46,29 @@ document.getElementById("injectAttack").addEventListener("click", (event) => {
 	}
 });
 
+document.getElementById("surgeLevel").addEventListener("change", (event) => {
+	var curSurge = document.getElementById("surgeLevel").value;
+	if(!isNumeric(curSurge)){
+		surgeLevel = 1;
+	} else {
+		surgeLevel = parseInt(curSurge);
+	}
+
+	localStorage.setItem("attackBotSurgeLevel", surgeLevel);
+	document.getElementById("surgeLevel").value = surgeLevel;
+});
+
+function isNumeric(value) {
+	return /^\d+$/.test(value);
+}
 
 function processRoll(finalRoll, d20){
+	var curSurge = document.getElementById("surgeLevel").value;
+	if(!isNumeric(curSurge)){
+		surgeLevel = 1;
+	} else {
+		surgeLevel = parseInt(curSurge);
+	}
 	var newElement = document.createElement("div");
 	var insideHTML = "<table>"
 
@@ -49,11 +82,13 @@ function processRoll(finalRoll, d20){
 	} else if(d20 == 1){
 		insideHTML += "<tr><td>Push everything within 5 squares 1 square</td></tr>"
 	}
-
+	
 	if(d20 <= surgeLevel) {
-		insideHTML += "<tr><td>Roll on wild magic table</td></tr>"
+		insideHTML += "<tr><td>Roll on wild magic table, reset surge</td></tr>"
 	}
 	insideHTML += "</table>"
 	newElement.innerHTML = insideHTML;
 	return newElement;
 }
+
+
