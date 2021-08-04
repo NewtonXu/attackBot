@@ -63,12 +63,6 @@ function isNumeric(value) {
 }
 
 function processRoll(finalRoll, d20){
-	var curSurge = document.getElementById("surgeLevel").value;
-	if(!isNumeric(curSurge)){
-		surgeLevel = 1;
-	} else {
-		surgeLevel = parseInt(curSurge);
-	}
 	var newElement = document.createElement("div");
 	var insideHTML = "<table>"
 
@@ -83,9 +77,6 @@ function processRoll(finalRoll, d20){
 		insideHTML += "<tr><td>Push everything within 5 squares 1 square</td></tr>"
 	}
 	
-	if(d20 <= surgeLevel) {
-		insideHTML += "<tr><td>Roll on wild magic table, reset surge</td></tr>"
-	}
 	insideHTML += "</table>"
 	newElement.innerHTML = insideHTML;
 	return newElement;
