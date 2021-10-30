@@ -1,4 +1,4 @@
-var regex = /.+\">(\d+)<\/span>.+/g;
+var regex = /.+"basicdiceroll">(\d+)<\/span>\)/g;
 var test_if_attack = /\d+ vs .+/g;
 if(localStorage.getItem("attackBotSurgeLevel")===null){
 	localStorage.setItem("attackBotSurgeLevel") = 1;
@@ -36,8 +36,8 @@ document.getElementById("injectAttack").addEventListener("click", (event) => {
 		}
 	        var textmsg = textarea[i].textContent;
 		if(test_if_attack.test(textmsg)){
-			var finalRoll = parseInt(textarea[i].firstChild.textContent); 
-			var d20 = parseInt(regex.exec(textarea[i].firstChild.title)[1]);
+			var finalRoll = parseInt(textarea[i].getElementsByClassName("inlinerollresult")[0].textContent); 
+			var d20 = parseInt(regex.exec(textarea[i].getElementsByClassName("inlinerollresult")[0].getAttribute("original-title"))[1]);
 			regex.lastIndex = 0;
 			var addElement = processRoll(finalRoll, d20);
 			textarea[i].parentNode.insertBefore(addElement, textarea[i].nextSibling);
@@ -72,7 +72,7 @@ function processRoll(finalRoll, d20){
 		insideHTML += "<tr><td>Roll a saving throw</td></tr>"
 	}
 	if(d20 == 20){
-		insideHTML += "<tr><td>Slide target 1 square, knock it prone after effect</td></tr>"
+		insideHTML += "<tr><td>Slide target 1 square, knock it prone after effect, remove resistance saving effect</td></tr>"
 	} else if(d20 == 1){
 		insideHTML += "<tr><td>Push everything within 5 squares 1 square</td></tr>"
 	}
