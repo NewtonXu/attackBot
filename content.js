@@ -36,8 +36,8 @@ document.getElementById("injectAttack").addEventListener("click", (event) => {
 		}
 	        var textmsg = textarea[i].textContent;
 		if(test_if_attack.test(textmsg)){
-			var finalRoll = parseInt(textarea[i].getElementsByClassName("inlinerollresult")[0].textContent); 
-			var d20 = parseInt(regex.exec(textarea[i].getElementsByClassName("inlinerollresult")[0].getAttribute("original-title"))[1]);
+			var finalRoll = parseInt(textarea[i]); 
+			var d20 = parseInt(regex.exec(textarea[i].getElementsByClassName("inlinerollresult")[0].getAttribute("title"))[1]);
 			regex.lastIndex = 0;
 			var addElement = processRoll(finalRoll, d20);
 			textarea[i].parentNode.insertBefore(addElement, textarea[i].nextSibling);
